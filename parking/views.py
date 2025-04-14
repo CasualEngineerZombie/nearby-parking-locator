@@ -85,7 +85,7 @@ def generate_map(request):
 
     # Find available parking spaces within the search radius and add markers.
     for parking in ParkingSpace.objects.filter(is_available=True):
-        if parking.name == "SM J MALL":
+        if parking.name == "BLACK SMOKE HAUS":
             distance = haversine(lat, lon, parking.latitude, parking.longitude)
             if distance <= radius:
                 parking_point = Point(latitude=parking.latitude, longitude=parking.longitude)
