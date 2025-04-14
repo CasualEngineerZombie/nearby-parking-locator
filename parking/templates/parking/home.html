@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nearby Parking Locator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Find Nearby Parking</h1>
+    <div id="map">
+        <!-- Map will be loaded here after obtaining your location -->
+    </div>
+
+    <script>
+        // Check if geolocation is available in this browser
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(loadMap, showError);
+        } else {
+            document.getElementById("map").innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        // Call the generate_map endpoint with the user's coordinates
+        function loadMap(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var url = "/map/?lat=" + lat + "&lon=" + lon;
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("map").innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById("map").innerHTML = "Error loading the map.";
+                    console.error('Error:', error);
+                });
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("map").innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("map").innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("map").innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("map").innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
