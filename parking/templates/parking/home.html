@@ -323,7 +323,7 @@
             }
 
             // Ensure spot.name is never null/undefined to prevent errors
-            const displayName = spot.name || 'Unnamed Parking'; // Default to 'Unnamed Parking' if null/empty
+            const displayName = (spot.name && spot.name.trim()) ? spot.name : 'Unnamed Parking';
 
             card.innerHTML = `
                 <div class="relative flex-shrink-0">
@@ -344,7 +344,7 @@
                         type="text"
                         value="${displayName.replace(/"/g, '&quot;')}"
                         id="name-input-${spot.id}"
-                        class="hidden w-[100%%] border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        class="hidden w-full min-w-[200px] border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                         />
                     
                     <div class="text-sm ${isSaved ? 'text-blue-700' : 'text-gray-600'} flex items-center">
@@ -374,7 +374,9 @@
                             Remove
                         </button>
                     ` : `
-                        <button class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 text-xs font-medium transition-all transform hover:scale-105" onclick="event.stopPropagation(); addToMyParking(${spot.latitude}, ${spot.longitude}, ${JSON.stringify(displayName)})">
+                        <button
+                            class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 text-xs font-medium transition-all transform hover:scale-105"
+                            onclick='event.stopPropagation(); addToMyParking(${spot.latitude}, ${spot.longitude}, ${JSON.stringify(displayName)})'>
                             Add
                         </button>
                     `}
