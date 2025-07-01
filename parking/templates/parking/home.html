@@ -29,7 +29,6 @@
     </script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <!-- Mobile Header -->
     <header class="md:hidden bg-white shadow-lg p-4 sticky top-0 z-20">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -53,10 +52,8 @@
     </header>
 
     <div class="flex flex-col md:flex-row min-h-screen md:min-h-0">
-        <!-- Map Container -->
         <div class="flex-1 relative order-2 md:order-1" style="min-height: 50vh;">
             <div id="map" class="w-full h-full rounded-none md:rounded-l-2xl overflow-hidden shadow-lg">
-                <!-- Enhanced Loading State -->
                 <div id="map-loading" class="flex flex-col items-center justify-center h-full bg-gradient-to-br from-blue-100 to-purple-100 animate-fade-in">
                     <div class="relative mb-6">
                         <span class="absolute inline-flex h-16 w-16 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 opacity-30 animate-ping"></span>
@@ -74,16 +71,13 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
         <aside id="sidebar" class="w-full md:w-96 bg-white shadow-lg order-1 md:order-2 transform md:transform-none transition-transform duration-300 ease-in-out md:relative fixed inset-x-0 bottom-0 z-30 rounded-t-3xl md:rounded-none max-h-[70vh] md:max-h-screen overflow-hidden flex flex-col">
-            <!-- Mobile handle -->
             <div class="md:hidden flex justify-center py-2 bg-gray-50 rounded-t-3xl flex-shrink-0">
                 <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
             
             <div class="flex-1 overflow-y-auto">
                 <div class="p-4 md:p-6">
-                <!-- Desktop Header -->
                 <div class="hidden md:block mb-6">
                     <div class="flex items-center space-x-3 mb-2">
                         <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
@@ -99,7 +93,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Stats -->
                 <div id="stats-container" class="grid grid-cols-2 gap-3 mb-6 hidden">
                     <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-3 text-white">
                         <div class="text-lg font-bold" id="saved-count">0</div>
@@ -111,14 +104,12 @@
                     </div>
                 </div>
 
-                    <!-- My Saved Spots -->
                     <div class="mb-6">
                         <div class="flex items-center space-x-2 mb-4">
                             <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
                             <h2 class="text-lg font-bold text-gray-900">My Saved Spots</h2>
                         </div>
                         <div id="saved-parking-list" class="space-y-3">
-                            <!-- Loading skeleton -->
                             <div class="animate-pulse">
                                 <div class="flex items-center space-x-3 bg-gray-100 rounded-xl p-3">
                                     <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
@@ -131,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Discover More -->
                     <div class="pb-4">
                         <div class="flex items-center space-x-2 mb-4">
                             <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
@@ -139,7 +129,6 @@
                             <span id="discover-count" class="hidden text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium"></span>
                         </div>
                         <div id="other-parking-list" class="space-y-3">
-                            <!-- Loading skeleton -->
                             <div class="animate-pulse">
                                 <div class="flex items-center space-x-3 bg-gray-100 rounded-xl p-3">
                                     <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
@@ -157,11 +146,10 @@
         </aside>
     </div>
 
-    <!-- Toast notifications -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <div id="fullscreen-loading"
-         class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 animate-fade-in">
+             class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 animate-fade-in">
         <div class="relative mb-6">
             <span class="absolute inline-flex h-20 w-20 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 opacity-30 animate-ping"></span>
             <span class="relative flex h-20 w-20 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 items-center justify-center">
@@ -334,6 +322,9 @@
                 avatar = `https://ui-avatars.com/api/?name=${name}&background=${isSaved ? '3b82f6' : '6b7280'}&color=fff&size=96`;
             }
 
+            // Ensure spot.name is never null/undefined to prevent errors
+            const displayName = spot.name || 'Unnamed Parking'; // Default to 'Unnamed Parking' if null/empty
+
             card.innerHTML = `
                 <div class="relative flex-shrink-0">
                     <img src="${avatar}" alt="avatar" class="w-12 h-12 rounded-full border-2 ${isSaved ? 'border-blue-300' : 'border-gray-300'} bg-white object-cover">
@@ -347,8 +338,15 @@
                     </div>
                 </div>
                 <div class="flex-1 ml-3 min-w-0">
-                    <div class="font-semibold ${isSaved ? 'text-blue-900' : 'text-gray-900'} truncate" id="name-display-${spot.id}">${spot.name}</div>
-                    <input type="text" value="${spot.name}" id="name-input-${spot.id}" class="hidden w-full border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <div class="font-semibold ${isSaved ? 'text-blue-900' : 'text-gray-900'} truncate" id="name-display-${spot.id}">${displayName}</div>
+                    
+                    <input
+                        type="text"
+                        value="${displayName.replace(/"/g, '&quot;')}"
+                        id="name-input-${spot.id}"
+                        class="hidden w-[100%%] border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        />
+                    
                     <div class="text-sm ${isSaved ? 'text-blue-700' : 'text-gray-600'} flex items-center">
                         <svg class="w-3 h-3 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -367,21 +365,39 @@
                         <button class="hidden px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-medium transition-colors" id="save-btn-${spot.id}" onclick="event.stopPropagation(); saveParkingName(${spot.id})">
                             Save
                         </button>
-                        <button class="hidden px-3 py-1.5 bg-gray-400 text-white rounded-lg hover:bg-gray-500 text-xs font-medium transition-colors" id="cancel-btn-${spot.id}" onclick="event.stopPropagation(); cancelEditParkingName(${spot.id}, '${spot.name.replace(/'/g, "\\'")}')">
+                        
+                        <button class="hidden px-3 py-1.5 bg-gray-400 text-white rounded-lg hover:bg-gray-500 text-xs font-medium transition-colors" id="cancel-btn-${spot.id}" onclick="event.stopPropagation(); cancelEditParkingName(${spot.id})">
                             Cancel
                         </button>
+
                         <button class="px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 text-xs font-medium transition-colors" onclick="event.stopPropagation(); removeParkingSpot(${spot.id})">
                             Remove
                         </button>
                     ` : `
-                        <button class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 text-xs font-medium transition-all transform hover:scale-105" onclick="event.stopPropagation(); addToMyParking(${spot.latitude}, ${spot.longitude}, '${spot.name.replace(/'/g, "\\'")}')">
+                        <button class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 text-xs font-medium transition-all transform hover:scale-105" onclick="event.stopPropagation(); addToMyParking(${spot.latitude}, ${spot.longitude}, ${JSON.stringify(displayName)})">
                             Add
                         </button>
                     `}
                 </div>
             `;
             
-            card.onclick = () => showRouteToSpot(spot);
+            card.onclick = (e) => {
+                if (
+                    e.target.tagName === "INPUT" ||
+                    e.target.tagName === "BUTTON" ||
+                    e.target.closest("button") ||
+                    e.target.closest("input")
+                ) {
+                    e.stopPropagation();
+                    return;
+                }
+                showRouteToSpot(spot);
+            };
+
+            card.querySelectorAll('input,button').forEach(el => {
+                el.addEventListener('click', e => e.stopPropagation());
+            });
+
             return card;
         }
 
@@ -440,24 +456,66 @@
         }
 
         function editParkingName(id) {
-            document.getElementById(`name-display-${id}`).classList.add('hidden');
-            document.getElementById(`name-input-${id}`).classList.remove('hidden');
-            document.getElementById(`save-btn-${id}`).classList.remove('hidden');
-            document.getElementById(`cancel-btn-${id}`).classList.remove('hidden');
-            document.getElementById(`name-input-${id}`).focus();
+            console.log(`--- Debugging editParkingName for spot ID: ${id} ---`);
+
+            const nameDisplay = document.getElementById(`name-display-${id}`);
+            const input = document.getElementById(`name-input-${id}`);
+            const saveBtn = document.getElementById(`save-btn-${id}`);
+            const cancelBtn = document.getElementById(`cancel-btn-${id}`);
+            const editBtn = saveBtn.previousElementSibling; // Assuming Edit button is before Save
+
+            if (!nameDisplay || !input || !saveBtn || !cancelBtn || !editBtn) {
+                console.error("Critical Error: Could not find all necessary elements for ID:", id);
+                return;
+            }
+
+            console.log("Found display element:", nameDisplay);
+            console.log("Display text content is:", `"${nameDisplay.textContent}"`);
+            
+            // Set the input's value to the current display name
+            input.value = nameDisplay.textContent.trim(); 
+            console.log("Input value AFTER change is:", `"${input.value}"`);
+            
+            // Hide the display and show the input
+            nameDisplay.classList.add('hidden');
+            input.classList.remove('hidden');
+
+            // Show Save and Cancel buttons, hide Edit button
+            saveBtn.classList.remove('hidden');
+            cancelBtn.classList.remove('hidden');
+            editBtn.classList.add('hidden'); // Hide the original Edit button
+            
+            input.focus();
+            input.select();
+            
+            console.log("--- End of Debugging ---");
         }
 
-        function cancelEditParkingName(id, originalName) {
-            document.getElementById(`name-display-${id}`).classList.remove('hidden');
-            document.getElementById(`name-input-${id}`).classList.add('hidden');
-            document.getElementById(`save-btn-${id}`).classList.add('hidden');
-            document.getElementById(`cancel-btn-${id}`).classList.add('hidden');
-            document.getElementById(`name-input-${id}`).value = originalName;
+        function cancelEditParkingName(id) {
+            const nameDisplay = document.getElementById(`name-display-${id}`);
+            const input = document.getElementById(`name-input-${id}`);
+            const saveBtn = document.getElementById(`save-btn-${id}`);
+            const cancelBtn = document.getElementById(`cancel-btn-${id}`);
+            const editBtn = saveBtn.previousElementSibling; // Assuming Edit button is before Save
+
+            // Restore original name in input (important for repeated edits)
+            input.value = nameDisplay.textContent.trim(); // Get the original text content from the display div
+
+            nameDisplay.classList.remove('hidden');
+            input.classList.add('hidden');
+            saveBtn.classList.add('hidden');
+            cancelBtn.classList.add('hidden');
+            editBtn.classList.remove('hidden'); // Show the Edit button again
         }
 
         function saveParkingName(id) {
             const input = document.getElementById(`name-input-${id}`);
             const newName = input.value.trim();
+            const nameDisplay = document.getElementById(`name-display-${id}`);
+            const saveBtn = document.getElementById(`save-btn-${id}`);
+            const cancelBtn = document.getElementById(`cancel-btn-${id}`);
+            const editBtn = saveBtn.previousElementSibling;
+
             if (!newName) {
                 showToast('Please enter a valid name', 'error');
                 return;
@@ -477,7 +535,18 @@
             .then(data => {
                 if (data.success) {
                     showToast('Name updated successfully!', 'success');
-                    loadParkingList(userLat, userLon);
+                    // Update the displayed name immediately
+                    nameDisplay.textContent = newName;
+
+                    // Revert to display mode
+                    nameDisplay.classList.remove('hidden');
+                    input.classList.add('hidden');
+                    saveBtn.classList.add('hidden');
+                    cancelBtn.classList.add('hidden');
+                    editBtn.classList.remove('hidden'); // Show edit button again
+
+                    // Re-load the list to ensure counts and order are correct (optional, but good for full sync)
+                    // loadParkingList(userLat, userLon); 
                 } else {
                     showToast(data.error || "Failed to update name.", 'error');
                 }
@@ -509,7 +578,7 @@
             })
             .catch(error => {
                 showToast('Network error. Please try again.', 'error');
-            });
+            }); 
         }
 
         function showToast(message, type = 'info') {
@@ -550,6 +619,7 @@
                 const cookies = document.cookie.split(';');
                 for (let i = 0; i < cookies.length; i++) {
                     const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
@@ -558,6 +628,7 @@
             }
             return cookieValue;
         }
+
     </script>
 </body>
 </html>

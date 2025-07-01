@@ -2,6 +2,10 @@
 
 A Django-based web application that displays a dynamic map showing the user’s current location along with nearby available parking spaces. The app uses [Folium](https://python-visualization.github.io/folium/) for interactive maps and integrates with a local [OSRM](http://project-osrm.org/) backend (running in Docker) to compute driving routes. The design is kept DRY by leveraging Pydantic models and reusable helper functions.
 
+## Demo
+
+![Nearby Parking Locator Demo](/demo.png)
+
 ## Features
 
 - **User Geolocation:**  
